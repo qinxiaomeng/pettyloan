@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    active: dev
+  cloud:
+    config:
+      name: customer,database,mybatis,feign,redis,key,management
+      discovery:
+        service-id: config
+        enabled: true

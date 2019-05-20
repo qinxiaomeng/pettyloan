@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--第一步：指明对应文件的Mapper类地址 -->
+<mapper namespace="com.brother.client.customer.mapper.CustMapper">
+
+    <!--第二步：配置表结构和类的对应关系 -->
+    <resultMap id="BaseResultMap" type="com.brother.client.customer.model.Customer">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="customer_name" property="customerName" jdbcType="VARCHAR"/>
+        <result column="customer_type" property="customerType" jdbcType="VARCHAR"/>
+        <result column="customer_manager" property="customerManager" jdbcType="VARCHAR"/>
+        <result column="certificate_type" property="certificateType" jdbcType="VARCHAR"/>
+        <result column="certificate_number" property="certificateNumber" jdbcType="VARCHAR"/>
+        <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="create_by" property="createBy" jdbcType="BIGINT"/>
+        <result column="create_date" property="createDate" jdbcType="DATE"/>
+        <result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
+        <result column="update_date" property="updateDate" jdbcType="DATE"/>
+        <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+        <result column="del_flag" property="delFlag" jdbcType="VARCHAR"/>
+        <result column="picture" property="picture" jdbcType="VARCHAR"/>
+        <result column="image_path" property="imagePath" jdbcType="VARCHAR"/>
+        <result column="account_id" property="accountId" jdbcType="VARCHAR"/>
+        <result column="real_auth" property="realAuth" jdbcType="VARCHAR"/>
+        <result column="recommender" property="recommender" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--第三步：写具体的SQL -->
+    <!--PS：MyBatis XML 有一个特点是可以复用 XML，比如我们公用的一些 XML 片段可以提取出来，在其他 SQL 中去引用。例如： -->
+    <sql id="base_column_list">
+        id,
+        customer_name,
+        customer_type,
+        customer_manager,
+        certificate_type,
+        certificate_number,
+        phone_number,
+        email,
+        create_by,
+        create_date,
+        update_by,
+        update_date,
+        remarks,
+        del_flag,
+        picture,
+        image_path,
+        account_id,
+        real_auth,
+        recommender
+    </sql>
+
+    <!--从查询参数中封装查询条件 -->
+    <sql id="base_param_list">
+        <if test="customerName != null and customerName != ''">
+            and customer_name = #{customerName}
+        </if>
+        <if test="customerType != null and customerType != ''">
+            and customer_type = #{customerType}
+        </if>
+        <if test="certificateNumber != null and certificateNumber != ''">
+            and certificate_number = #{certificateNumber}
+        </if>
+        <if test="phoneNumber != null and phoneNumber!= ''">
+            and phone_number = #{phoneNumber}
+        </if>
+        <if test="delFlag != null and delFlag!= ''">
+            and del_flag = #{delFlag}
+        </if>
+    </sql>
+
+    <select id="get" resultMap="BaseResultMap">
+      SELECT
+      <include refid="base_column_list"/>
+      FROM biz_customer
+      WHERE id = #{id}
+    </select>
+    <select id="findList" resultMap="BaseResultMap" parameterType="com.brother.client.customer.request.CustParam">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM biz_customer
+        <where>
+            <include refid="base_param_list"/>
+        </where>
+        ORDER by create_date DESC
+        limit #{beginLine}, #{pageSize}
+    </select>
+
+    <select id="findAllList" resultMap="BaseResultMap" parameterType="com.brother.client.customer.request.CustParam">
+        SELECT
+        <include refid="base_column_list"/>
+        FROM biz_customer
+        <where>
+            <include refid="base_param_list"/>
+        </where>
+        ORDER by create_date DESC
+    </select>
+
+    <select id="getCount" resultType="Integer" parameterType="com.brother.client.customer.request.CustParam">
+        select
+        count(1)
+        from biz_customer
+        <where>
+            <include refid="base_param_list"/>
+        </where>
+
+    </select>
+
+    <insert id="insert" parameterType="com.brother.client.customer.model.Customer">
+        INSERT INTO
+          biz_customer(
+            id,
+            customer_name,
+            customer_type,
+            customer_manager,
+            certificate_type,
+            certificate_number,
+            phone_number,
+            email,
+            create_by,
+            create_date,
+            update_by,
+            update_date,
+            remarks,
+            del_flag,
+            picture,
+            image_path,
+            account_id,
+            real_auth,
+            recommender)
+        VALUES (
+          #{id},
+          #{customerName},
+          #{customerType},
+          #{customerManager},
+          #{certificateType},
+          #{certificateNumber},
+          #{phoneNumber},
+          #{email},
+          #{createBy},
+          #{createDate},
+          #{updateBy},
+          #{updateDate},
+          #{remarks},
+          #{delFlag},
+          #{picture},
+          #{imagePath},
+          #{accountId},
+          #{realAuth},
+          #{recommender})
+    </insert>
+    <update id="update">
+        UPDATE biz_customer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="customerName != null">
+                customer_name = #{customerName},
+            </if>
+            <if test="customerType != null">
+                customer_type = #{customerType},
+            </if>
+            <if test="customerManager != null">
+                customer_manager = #{customerManager},
+            </if>
+            <if test="certificateType != null">
+                certificateType = #{certificateType},
+            </if>
+            <if test="certificateNumber != null">
+                certificate_number = #{certificateNumber},
+            </if>
+            <if test="phoneNumber != null">
+                phone_number = #{phoneNumber},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="updateBy != null">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag},
+            </if>
+            <if test="picture != null">
+                picture = #{picture},
+            </if>
+            <if test="imagePath != null">
+                image_path = #{imagePath},
+            </if>
+            <if test="accountId != null">
+                account_id = #{accountId},
+            </if>
+            <if test="realAuth != null">
+                real_auth = #{realAuth}
+            </if>
+        </trim>
+    </update>
+
+</mapper>

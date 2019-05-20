@@ -1,0 +1,23 @@
+server:
+  port: 8101
+spring:
+  application:
+    name: config
+  profiles:
+    active: dev
+  cloud:
+    config:
+      server:
+        git:
+          uri: ssh://git@gitlab.qilerong.com:50022/qinxiaomeng/sc_config.git
+          search-paths: config
+          username: qinxm@qilerong.com
+          password: qinxm1225
+    bus:
+      trace:
+        enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, info, bus-refresh

@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    inetutils:
+      preferred-networks: 127.0.0.1
+    client:
+      ip-address: 127.0.0.1
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      ###注册中心默认地址
+      defaultZone: http://127.0.0.1:8761/eureka/

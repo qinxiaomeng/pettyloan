@@ -1,0 +1,17 @@
+spring:
+  cloud:
+    config:
+      server:
+        default-label: dev
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    publisher-confirms: true
+eureka:
+  client:
+    service-url:
+      ###注册中心默认地址
+      defaultZone: http://127.0.0.1:8888/eureka/

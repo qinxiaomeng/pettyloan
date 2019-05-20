@@ -1,0 +1,22 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: eurekaserver
+  profiles:
+    active: dev
+eureka:
+  server:
+    ###微服务节点连接超时时间
+    peer-node-read-timeout-ms: 3000
+    ###经验:如果设置为 true，在负载均衡条件下，一个服务挂掉后，注册中心并没有删掉该服务，
+    ###会导致客户端请求的时候可能会请求到该服务，导致系统无法访问，因此我推荐将这个属性设置为 false
+    enable-self-preservation: false
+  instance:
+    ###是否以 IP 注册到注册中心
+    prefer-ip-address: true
+  client:
+    register-with-eureka: false #是否向服务端注册自己，它本身就是Eureka Server，所以为false
+    fetch-registry: false #表示是否从Eureka Server获取信息，因为这是一个单节点，不需要同步其它Eureka Server的数据，所以为 false
+    healthcheck:
+      enabled: true

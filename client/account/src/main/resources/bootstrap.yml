@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    active: dev
+  cloud:
+    config:
+      discovery:
+        service-id: config
+        enabled: true
+      name: account,database,feign,redis,key
