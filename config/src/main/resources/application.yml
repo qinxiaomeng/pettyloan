@@ -20,4 +20,18 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, info, bus-refresh
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+  health:
+    redis:
+      enabled: false
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 10
+    health-check-url-path: /actuator/health
+    metadata-map:
+      startup: ${random.int}
+  client:
+    registry-fetch-interval-seconds: 5
